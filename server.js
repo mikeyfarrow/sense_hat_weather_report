@@ -2,10 +2,11 @@ const express = require('express');
 const sqlite3 = require('sqlite3');
 var request = require('request');
 const path = require('path');
-
+const fs = require('fs');
 const port = 8080;
 const app = express();
 const db = new sqlite3.Database(path.join(__dirname, 'data', 'weather.sqlt'));
+const textFilePath = path.join(__dirname, 'data', 'dump.txt');
 const AUTUMN_PHONE_NUMBER = '2533022119';
 const TEMPERATURE_BOUNDS = { min: 1.67, max: 26.6 } // 35F to 80F
 
@@ -34,6 +35,12 @@ app.get('/all', (req, res) => {
                 message: err
             });
         } else {
+            
+            fs.writeFile(textFilePath, rows.map(row => JSON.stringify(row)).join('\n'), err => {
+                if (err) {
+                    console.log('error saving txt file');
+                }
+            });
             res.send({
                 ok: true,
                 rows: rows
