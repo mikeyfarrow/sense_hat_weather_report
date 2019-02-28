@@ -13,4 +13,4 @@ while True:
     }
     print(report)
     r = requests.post("http://localhost:8080/record", data=report)
-    time.sleep(.75)
+    time.sleep(5)
