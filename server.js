@@ -1,6 +1,7 @@
 const express = require('express');
 const sqlite3 = require('sqlite3');
 var request = require('request');
+const path = require('path');
 
 const port = 8080;
 const app = express();
@@ -14,7 +15,7 @@ if (!process.argv[2]) {
 const TEXTBELT_KEY = process.argv[2];
 
 var bodyParser = require('body-parser')
-app.use(express.static('public')); // serve the contents of the public folder
+app.use(express.static(path.join(__dirname, 'public'))); // serve the contents of the public folder
 app.use(bodyParser.json()); // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({
     extended: true
