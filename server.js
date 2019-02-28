@@ -69,11 +69,11 @@ app.post('/record', (req, res) => {
 });
 
 function checkTemp(temp) {
-    if (temp < 40) {
+    if (temp < 0) {
         request.post('https://textbelt.com/text', {
             form: {
                 phone: AUTUMN_PHONE_NUMBER,
-                message: `The temperature has reached ${temp}. View the data here: http://10.0.0.222:8080`,
+                message: `The temperature has reached ${temp}.`,
                 key: TEXTBELT_KEY,
             },
         },
