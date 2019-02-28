@@ -12,9 +12,47 @@
     </script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js'></script>
     <script src='index.js'></script>
+    <style>
+
+#data {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#data td, #data th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#data tr:nth-child(even){background-color: #f2f2f2;}
+
+#data tr:hover {background-color: #ddd;}
+
+#data th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4CAF50;
+  color: white;
+}
+    </style>
 </head>
 <body>
     <h1>Sense Hat</h1>
-    <pre id="data"></pre>
+    <table id="data">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Pressure (Millibars)</th>
+                <th>Humidity (RH %)</th>
+                <th>Temperature &deg;C (from pressure)</th>
+                <th>Temperature &deg;C (from humidity)</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        </tbody>
+    </table>
 </body>
 </html>
