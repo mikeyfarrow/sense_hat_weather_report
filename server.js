@@ -1,18 +1,27 @@
 const express = require('express');
 const sqlite3 = require('sqlite3');
+var request = require('request');
 
 const port = 8080;
 const app = express();
 const db = new sqlite3.Database(':memory:');
+const AUTUMN_PHONE_NUMBER = '2533022119';
+
+if (!process.argv[2]) {
+    console.log('provide textbelt key');
+    process.exit(1);
+}
+const TEXTBELT_KEY = process.argv[2];
 
 var bodyParser = require('body-parser')
 app.use(express.static('public')); // serve the contents of the public folder
 app.use(bodyParser.json()); // to support JSON-encoded bodies
-app.use(bodyParser.urlencoded({ extended: true })); // for URL-encoded bodies
+app.use(bodyParser.urlencoded({
+    extended: true
+})); // for URL-encoded bodies
+
 
 initializeDb();
-
-
 
 app.get('/all', (req, res) => {
     db.all(`SELECT * FROM Environment`, (err, rows) => {
@@ -35,7 +44,10 @@ app.post('/record', (req, res) => {
     console.log(req.body);
 
     if (!verifyData(req.body)) {
-        res.send({ ok: false, message: `POST data must include properties: temp_from_humidity, temp_from_pressure, pressure, and humidity`})
+        res.send({
+            ok: false,
+            message: `POST data must include properties: temp_from_humidity, temp_from_pressure, pressure, and humidity`
+        })
         return;
     }
 
@@ -47,7 +59,25 @@ app.post('/record', (req, res) => {
         req.body.temp_from_pressure,
         req.body.temp_from_humidity,
         (err) => {
-            res.send({ok: true, message: req.body});
+            res.send({
+                ok: true,
+                message: req.body
+            });
+        });
+
+    request.post('https://textbelt.com/text', {
+            form: {
+                phone: AUTUMN_PHONE_NUMBER,
+                message: `The temperature has reached ${req.body.temp_from_pressure}. View the data here: http://10.0.0.222:8080`,
+                key: TEXTBELT_KEY,
+            },
+        },
+        function (err, httpResponse, body) {
+            if (err) {
+                console.error('Error:', err);
+                return;
+            }
+            console.log(JSON.parse(body));
         })
 });
 
@@ -56,7 +86,7 @@ app.post('/record', (req, res) => {
 function verifyData(data) {
     const props = ["temp_from_humidity", "temp_from_pressure", "pressure", "humidity"];
     for (var prop of props) {
-        if (data[prop] == undefined) 
+        if (data[prop] == undefined)
             return false
     }
     return true;
