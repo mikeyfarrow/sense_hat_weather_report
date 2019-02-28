@@ -12,10 +12,10 @@ function getWeather() {
             var rows = temps.map(
                 d => $('<tr>')
                     .append($('<td>').text(d.time_recorded))
-                    .append($('<td>').text(d.pressure))
-                    .append($('<td>').text(`${d.humidity}%`))
-                    .append($('<td>').text(d.temp_from_pressure))
-                    .append($('<td>').text(d.temp_from_humidity))
+                    .append($('<td>').text(d.pressure.toFixed(1)))
+                    .append($('<td>').text(`${d.humidity.toFixed(1)}%`))
+                    .append($('<td>').text(cToF(d.temp_from_pressure)))
+                    .append($('<td>').text(cToF(d.temp_from_humidity)))
             );
 
             $('#data tbody')
@@ -30,4 +30,8 @@ function getWeather() {
             //         .join('\n')
             // );
         })
+}
+
+function cToF(tempC) {
+    return (tempC * (9/5) + 32).toFixed(1);
 }

@@ -12,8 +12,6 @@
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "request": "^2.88.0",
-    "sqlite3": "^4.0.6",
-    "textbelt": "0.0.4",
-    "voice.js": "^0.1.5"
+    "sqlite3": "^4.0.6"
   }
 }
