@@ -12,5 +12,5 @@ while True:
       "pressure": s.get_pressure() # millibars
     }
     print(report)
-    r = requests.post("/record", data=report)
+    r = requests.post("http://localhost:8080/record", data=report)
     time.sleep(.75)
