@@ -65,10 +65,15 @@ app.post('/record', (req, res) => {
             });
         });
 
-    request.post('https://textbelt.com/text', {
+        checkTemp(req.body.temp_from_humidity);
+});
+
+function checkTemp(temp) {
+    if (temp < 40) {
+        request.post('https://textbelt.com/text', {
             form: {
                 phone: AUTUMN_PHONE_NUMBER,
-                message: `The temperature has reached ${req.body.temp_from_pressure}. View the data here: http://10.0.0.222:8080`,
+                message: `The temperature has reached ${temp}. View the data here: http://10.0.0.222:8080`,
                 key: TEXTBELT_KEY,
             },
         },
@@ -79,9 +84,8 @@ app.post('/record', (req, res) => {
             }
             console.log(JSON.parse(body));
         })
-});
-
-
+    }
+}
 
 function verifyData(data) {
     const props = ["temp_from_humidity", "temp_from_pressure", "pressure", "humidity"];
