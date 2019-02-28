@@ -26,7 +26,7 @@ app.use(bodyParser.urlencoded({
 initializeDb();
 
 app.get('/all', (req, res) => {
-    db.all(`SELECT * FROM Environment`, (err, rows) => {
+    db.all(`SELECT * FROM Environment ORDER BY time_recorded DESC`, (err, rows) => {
         if (err) {
             console.log(err);
             res.send({
