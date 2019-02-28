@@ -67,7 +67,7 @@ app.post('/record', (req, res) => {
             });
         });
 
-        checkTemp(req.body.temp_from_humidity);
+        // checkTemp(req.body.temp_from_humidity);
 });
 
 function checkTemp(temp) {
