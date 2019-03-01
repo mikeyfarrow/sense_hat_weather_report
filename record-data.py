@@ -7,7 +7,9 @@ def call_repeatedly(interval, func, *args):
     def loop():
         while not stopped.wait(interval): # the first call is in `interval` secs
             func(*args)
-    Thread(target=loop).start()    
+    thread=Thread(target=loop)
+    thread.daemon = True
+    thread.start()    
     return stopped.set
 
 def report_conditions():
@@ -20,5 +22,7 @@ def report_conditions():
     }
     print(report)
 
-
-call_repeatedly(5, report_conditions)
+# try:
+  cancel = call_repeatedly(5, report_conditions)
+# finally:
+  # cancel()
