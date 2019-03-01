@@ -1,8 +1,6 @@
 from sense_hat import SenseHat
 from threading import Event, Thread
 
-s = SenseHat()
-call_repeatedly(5, report_conditions)
 
 def call_repeatedly(interval, func, *args):
     stopped = Event()
@@ -13,6 +11,7 @@ def call_repeatedly(interval, func, *args):
     return stopped.set
 
 def report_conditions():
+    s = SenseHat()
     report = {
       "humidity": s.get_humidity(), # percentage
       "temp_from_humidity": s.get_temperature_from_humidity(), # celcius
@@ -20,3 +19,6 @@ def report_conditions():
       "pressure": s.get_pressure() # millibars
     }
     print(report)
+
+
+call_repeatedly(5, report_conditions)
