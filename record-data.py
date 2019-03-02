@@ -43,14 +43,14 @@ def report_conditions():
 
     report = {
         "time": str(datetime.datetime.now()),
-        "humidity": humidity,  # percentage
-        "pressure": pressure,  # millibars
-        "temp_from_humidity": temp_hum,  # celcius
-        "temp_from_pressure": temp_press,  # celcius
-        "temp_avg": temp_avg,
-        "temp_from_pressure_corrected": temp_corrected(temp_press),
-        "temp_from_humidity_corrected": temp_corrected(temp_hum),
-        "temp_avg_corrected": temp_corrected(temp_avg)
+        "humidity": round(humidity,2),  # percentage
+        "pressure": round(pressure,2),  # millibars
+        "temp_from_humidity": round(temp_hum,2),  # celcius
+        "temp_from_pressure": round(temp_press,2),  # celcius
+        "temp_avg": round(temp_avg,2),
+        "temp_from_pressure_corrected": round(temp_corrected(temp_press),2),
+        "temp_from_humidity_corrected": round(temp_corrected(temp_hum),2),
+        "temp_avg_corrected": round(temp_corrected(temp_avg),2)
     }
     pp.pprint(report)
     write_to_file(report)
