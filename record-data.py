@@ -1,9 +1,11 @@
+import datetime
 import os
 import pprint
 from sense_hat import SenseHat
 from threading import Event, Thread
 
 pp = pprint.PrettyPrinter(indent=4)
+
 
 def get_cpu_temp():
     res = os.popen("vcgencmd measure_temp").readline()
@@ -21,6 +23,11 @@ def call_repeatedly(interval, func, *args):
     return stopped.set
 
 
+# When reviewing the Enviro pHAT for the Pi Zero we came up with an equation
+# to account for the CPU temperature affecting a hat's temperature reading.
+# We just need the CPU temperature and a scaling factor to calculate the
+# calibrated temperature:
+# temp_calibrated = temp - ((cpu_temp - temp)/FACTOR) where FACTOR=5.466
 def temp_corrected(temp):
   offset = (get_cpu_temp() - temp) / 5.466
   return temp - offset
@@ -35,6 +42,7 @@ def report_conditions():
     humidity = s.get_humidity()
 
     report = {
+        "time": str(datetime.datetime.now()),
         "humidity": humidity,  # percentage
         "pressure": pressure,  # millibars
         "temp_from_humidity": temp_hum,  # celcius
@@ -44,16 +52,21 @@ def report_conditions():
         "temp_from_humidity_corrected": temp_corrected(temp_hum),
         "temp_avg_corrected": temp_corrected(temp_avg)
     }
-    pp.print(report)
+    pp.pprint(report)
+    write_to_file()
 
-
-# When reviewing the Enviro pHAT for the Pi Zero we came up with an equation
-# to account for the CPU temperature affecting a hat's temperature reading.
-# We just need the CPU temperature and a scaling factor to calculate the
-# calibrated temperature:
-# temp_calibrated = temp - ((cpu_temp - temp)/FACTOR) where FACTOR=5.466
-
-
+def write_to_file(report):
+  filename = 'data/weather-data.csv'
+  if os.path.exists(filename):
+    append_write = 'a' # append if already exists
+    file = open(filename, 'a')
+  else:
+    file = open(filename, 'w')
+    attrs = [a for a in report]
+    file.write(','.join(attrs))
+  data = [report[a] for a in report]
+  file.write(','.join(data))
+  file.close()
 
 print('Starting to record measurements. Kill program with Ctrl-Z')
 call_repeatedly(5, report_conditions)
