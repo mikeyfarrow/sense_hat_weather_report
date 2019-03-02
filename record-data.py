@@ -56,16 +56,18 @@ def report_conditions():
     write_to_file(report)
 
 def write_to_file(report):
+  props = ','.join([str(a) for a in report])
+  vals = ','.join([str(report[a]) for a in report])
   filename = 'data/weather-data.csv'
   if os.path.exists(filename):
     append_write = 'a' # append if already exists
     file = open(filename, 'a')
   else:
     file = open(filename, 'w')
-    attrs = [a for a in report]
-    file.write(','.join(attrs))
-  data = [report[a] for a in report]
-  file.write(','.join(data))
+    file.write(props)
+    file.write('\n')
+  file.write(vals)
+  file.write('\n')
   file.close()
 
 print('Starting to record measurements. Kill program with Ctrl-Z')
