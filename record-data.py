@@ -53,7 +53,7 @@ def report_conditions():
         "temp_avg_corrected": temp_corrected(temp_avg)
     }
     pp.pprint(report)
-    write_to_file()
+    write_to_file(report)
 
 def write_to_file(report):
   filename = 'data/weather-data.csv'
