@@ -1,7 +1,9 @@
 import os
+import pprint
 from sense_hat import SenseHat
 from threading import Event, Thread
 
+pp = pprint.PrettyPrinter(indent=4)
 
 def get_cpu_temp():
     res = os.popen("vcgencmd measure_temp").readline()
@@ -42,7 +44,7 @@ def report_conditions():
         "temp_from_humidity_corrected": temp_corrected(temp_hum),
         "temp_avg_corrected": temp_corrected(temp_avg)
     }
-    print(report)
+    pp.print(report)
 
 
 # When reviewing the Enviro pHAT for the Pi Zero we came up with an equation
