@@ -71,4 +71,4 @@ def write_to_file(report):
   file.close()
 
 print('Starting to record measurements. Kill program with Ctrl-Z')
-call_repeatedly(5, report_conditions)
+call_repeatedly(30, report_conditions)
